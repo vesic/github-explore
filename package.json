@@ -7,7 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "apollo-client-preset": "^1.0.5",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.6.1",
     "react": "16.0.0",
+    "react-apollo": "^2.0.4",
     "react-native": "0.51.0",
     "react-native-elements": "^0.18.5",
     "react-native-vector-icons": "^4.4.3"
