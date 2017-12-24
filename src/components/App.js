@@ -8,7 +8,7 @@ import {
   Divider
 } from "react-native-elements";
 import SearchResults from "./SearchResults";
-import HeaderLeftComponent from './HeaderLeftComponent';
+import HeaderLeftComponent from "./HeaderLeftComponent";
 
 export default class App extends Component<{}> {
   state = {
@@ -23,7 +23,6 @@ export default class App extends Component<{}> {
   renderFilter = () => {
     const buttons = ["Users", "Repos"];
     const selectedIndex = 0;
-
     if (this.state.filterVisible) {
       return (
         <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
@@ -50,7 +49,6 @@ export default class App extends Component<{}> {
         </View>
       );
     }
-
     return null;
   };
 
@@ -60,7 +58,9 @@ export default class App extends Component<{}> {
         <Header
           outerContainerStyles={{ backgroundColor: "#3498db" }}
           leftComponent={
-            <HeaderLeftComponent toggleFilterVisible={this.toggleFilterVisible} />
+            <HeaderLeftComponent
+              toggleFilterVisible={this.toggleFilterVisible}
+            />
           }
           centerComponent={{ text: "MY TITLE", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
