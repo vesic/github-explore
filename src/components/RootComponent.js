@@ -9,47 +9,12 @@ import {
 } from "react-native-elements";
 import SearchResults from "./SearchResults";
 import HeaderLeftComponent from "./HeaderLeftComponent";
+import Filter from './Filter';
 
 export default class RootComponent extends Component<{}> {
   state = {
     checked: true,
     filterVisible: false
-  };
-
-  toggleFilterVisible = () => {
-    this.setState({ filterVisible: !this.state.filterVisible });
-  };
-
-  renderFilter = () => {
-    const buttons = ["Users", "Repos"];
-    const selectedIndex = 0;
-    if (this.state.filterVisible) {
-      return (
-        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-          <View style={{ flex: 0.7 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                marginLeft: 16,
-                marginTop: 8
-              }}
-            >
-              Search for:
-            </Text>
-          </View>
-          <View style={{ flex: 0.3 }}>
-            <ButtonGroup
-              selectedIndex={selectedIndex}
-              buttons={buttons}
-              containerStyle={{ height: 30 }}
-              selectedBackgroundColor="#bdc3c7"
-            />
-          </View>
-        </View>
-      );
-    }
-    return null;
   };
 
   render() {
@@ -59,13 +24,13 @@ export default class RootComponent extends Component<{}> {
           outerContainerStyles={{ backgroundColor: "#3498db" }}
           leftComponent={
             <HeaderLeftComponent
-              toggleFilterVisible={this.toggleFilterVisible}
+              toggleFilterVisible={() => this.setState({filterVisible: !this.state.filterVisible})}
             />
           }
-          centerComponent={{ text: "MY TITLE", style: { color: "#fff" } }}
+          centerComponent={{ text: "GITHUB EXPLORE", style: { color: "#fff" } }}
           rightComponent={{ icon: "home", color: "#fff" }}
         />
-        {this.renderFilter()}
+        {this.state.filterVisible ? <Filter /> : null}
         <SearchBar
           containerStyle={{ backgroundColor: "#fff" }}
           lightTheme
