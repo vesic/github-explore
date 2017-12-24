@@ -1,15 +1,5 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-
-const client = new ApolloClient({
-  link: new HttpLink({ uri: 'https://api.example.com/graphql' }),
-  cache: new InMemoryCache()
-});
-
 import {
   SearchBar,
   Header,
@@ -20,7 +10,7 @@ import {
 import SearchResults from "./SearchResults";
 import HeaderLeftComponent from "./HeaderLeftComponent";
 
-export default class App extends Component<{}> {
+export default class RootComponent extends Component<{}> {
   state = {
     checked: true,
     filterVisible: false
@@ -35,37 +25,34 @@ export default class App extends Component<{}> {
     const selectedIndex = 0;
     if (this.state.filterVisible) {
       return (
-        <ApolloProvider client={client}>
-          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-            <View style={{ flex: 0.7 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  marginLeft: 16,
-                  marginTop: 8
-                }}
-              >
-                Search for:
-              </Text>
-            </View>
-            <View style={{ flex: 0.3 }}>
-              <ButtonGroup
-                selectedIndex={selectedIndex}
-                buttons={buttons}
-                containerStyle={{ height: 30 }}
-                selectedBackgroundColor="#bdc3c7"
-              />
-            </View>
+        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+          <View style={{ flex: 0.7 }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                marginLeft: 16,
+                marginTop: 8
+              }}
+            >
+              Search for:
+            </Text>
           </View>
-        </ApolloProvider>
+          <View style={{ flex: 0.3 }}>
+            <ButtonGroup
+              selectedIndex={selectedIndex}
+              buttons={buttons}
+              containerStyle={{ height: 30 }}
+              selectedBackgroundColor="#bdc3c7"
+            />
+          </View>
+        </View>
       );
     }
     return null;
   };
 
   render() {
-    console.warn(JSON.stringify(client))
     return (
       <View>
         <Header
