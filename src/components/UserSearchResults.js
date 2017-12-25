@@ -12,6 +12,7 @@ const GetDefault = gql`
       edges {
         node {
           ... on User {
+            id
             login
             avatarUrl
             name
@@ -41,10 +42,6 @@ class UserSearchResults extends Component {
     selectedNode: null
   };
 
-  static defaultProps = {
-    query: "vesic"
-  };
-
   animate = () => {
     Animated.spring(this.state.value, {
       toValue: 1
@@ -55,12 +52,25 @@ class UserSearchResults extends Component {
     this.animate();
   }
 
+  onRefresh = () => {
+    this.setState(
+      {
+        value: new Animated.Value(0.3)
+      },
+      () => {
+        this.animate();
+      }
+    );
+  };
+  
+  keyExtractor = item => item.node.id;
+
   renderList = () => {
     return (
       <Animated.View style={{ opacity: this.state.value }}>
         <FlatList
           data={this.props.data.search.edges}
-          keyExtractor={this._keyExtractor}
+          keyExtractor={this.keyExtractor}
           renderItem={e => <UserRepos repo={e} />}
           refreshControl={
             <RefreshControl

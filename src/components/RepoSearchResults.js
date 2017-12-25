@@ -48,10 +48,6 @@ class RepoSearchResults extends Component {
     selectedNode: null
   };
 
-  static defaultProps = {
-    query: "axios"
-  };
-
   animate = () => {
     Animated.spring(this.state.value, {
       toValue: 1
@@ -60,10 +56,6 @@ class RepoSearchResults extends Component {
 
   componentWillReceiveProps() {
     this.animate();
-  }
-
-  componentDidUpdate() {
-    console.warn(this.props)
   }
 
   onRefresh = () => {
@@ -77,7 +69,7 @@ class RepoSearchResults extends Component {
     );
   };
 
-  _keyExtractor = item => item.node.id;
+  keyExtractor = item => item.node.id;
 
   toggleModal = node => {
     this.setState({
@@ -99,14 +91,12 @@ class RepoSearchResults extends Component {
       <Animated.View style={{ opacity: this.state.value }}>
         <FlatList
           data={this.props.data.search.edges}
-          keyExtractor={this._keyExtractor}
+          keyExtractor={this.keyExtractor}
           renderItem={e => (
             <Card title={e.item.node.nameWithOwner}>
               <TouchableOpacity onPress={() => this.toggleModal(e.item.node)}>
                 <View style={{ flexDirection: "row" }}>
                   <View style={{ flex: 0.7 }}>
-                    {/* <Text>{JSON.stringify(e)}</Text> */}
-                    {/* <Text>{e.item.node.nameWithOwner}</Text> */}
                     <Text>{e.item.node.description}</Text>
                   </View>
                   <View style={{ flex: 0.3 }}>
@@ -140,7 +130,7 @@ class RepoSearchResults extends Component {
 export default graphql(GetDefault, {
   options: ownProps => ({
     variables: {
-      query: ownProps.query || 'jquery'
+      query: ownProps.query || 'react-native'
     }
   })
 })(RepoSearchResults);

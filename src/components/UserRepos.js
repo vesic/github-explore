@@ -29,23 +29,24 @@ class UserRepos extends Component {
   };
 
   render() {
+    const { node } = this.props.repo.item;
     return (
-      <Card title={this.props.repo.item.node.login}>
+      <Card title={node.login}>
         {/* <Text>{JSON.stringify(this.props.repo)}</Text> */}
         <View style={{ flexDirection: "row", marginBottom: 10 }}>
           <View style={{ flex: 0.5, justifyContent: "flex-start" }}>
             <Text style={{ fontWeight: "bold" }}>
-              Email: {this.props.repo.item.node.email || "Email N/A"}
+              Email: {node.email || "Email N/A"}
             </Text>
             <Text style={{ fontWeight: "bold" }}>
-              Bio: {this.props.repo.item.node.bio || "Bio N/A"}
+              Bio: {node.bio || "Bio N/A"}
             </Text>
           </View>
           <View style={{ flex: 0.5, justifyContent:'center', alignItems:'center' }}>
             <Image
               style={{ width: 50, height: 50}}
               source={{
-                uri: this.props.repo.item.node.avatarUrl
+                uri: node.avatarUrl
               }}
             />
           </View>
@@ -54,7 +55,7 @@ class UserRepos extends Component {
         <View style={{ flexDirection: "row", marginTop: 10 }}>
           <View style={{ flex: 0.7 }}>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              First 10 of {this.props.repo.item.node.repositories.totalCount} user
+              First 10 of {node.repositories.totalCount} user
               repos:
             </Text>
           </View>
