@@ -3,9 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 import {
   SearchBar,
   Header,
-  ButtonGroup,
-  Card,
-  Divider
 } from "react-native-elements";
 import SearchResults from "./SearchResults";
 import HeaderLeftComponent from "./HeaderLeftComponent";
@@ -17,10 +14,6 @@ export default class RootComponent extends Component<{}> {
     filterVisible: false,
     searchText: "",
     searchQuery: "react-native"
-  };
-
-  updateChild = () => {
-    this.child.getWrappedInstance().up();
   };
 
   render() {
