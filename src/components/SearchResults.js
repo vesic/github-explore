@@ -10,7 +10,8 @@ import {
 import { Card, Text } from "react-native-elements";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import DetailsModal from './DetailsModal';
+import DetailsModal from "./DetailsModal";
+import Spinner from "./Spinner";
 
 const GetDefault = gql`
   query GetDefault($query: String!) {
@@ -68,18 +69,21 @@ class SearchResults extends Component {
 
   _keyExtractor = item => item.node.id;
 
-  toggleModal = (node) => {
+  toggleModal = node => {
     this.setState({
       modalVisible: !this.state.modalVisible,
-      selectedNode: node 
-    })
-  }
+      selectedNode: node
+    });
+  };
 
   renderList = () => {
     if (this.state.modalVisible) {
       return (
-        <DetailsModal selectedNode={this.state.selectedNode} toggleModal={ this.toggleModal } />
-      )
+        <DetailsModal
+          selectedNode={this.state.selectedNode}
+          toggleModal={this.toggleModal}
+        />
+      );
     }
     return (
       <Animated.View style={{ opacity: this.state.value }}>
@@ -88,9 +92,7 @@ class SearchResults extends Component {
           keyExtractor={this._keyExtractor}
           renderItem={e => (
             <Card title={e.item.node.nameWithOwner}>
-              <TouchableOpacity
-                onPress={() => this.toggleModal(e.item.node) }
-              >
+              <TouchableOpacity onPress={() => this.toggleModal(e.item.node)}>
                 <View style={{ flexDirection: "row" }}>
                   <View style={{ flex: 0.7 }}>
                     {/* <Text>{JSON.stringify(e)}</Text> */}
@@ -121,14 +123,7 @@ class SearchResults extends Component {
   };
 
   render() {
-    if (this.props.data.loading) {
-      return (
-        <View>
-          <Text>loading...</Text>
-        </View>
-      );
-    } // end if
-    return this.renderList();
+    return this.props.data.loading ? <Spinner /> : this.renderList();
   }
 }
 
