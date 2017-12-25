@@ -3,9 +3,21 @@ import { View, Text } from "react-native";
 import { ButtonGroup } from "react-native-elements";
 
 class Filter extends Component {
+  buttons = ["Repos", "Users"];
+
+  state = {
+    selectedIndex: 0
+  }
+
+  updateIndex = (selectedIndex) => {
+    this.setState({selectedIndex}, () => {
+      this.props.updateSearchType(selectedIndex)
+    })
+  }
+
   render() {
-    const buttons = ["Users", "Repos"];
-    const selectedIndex = 0;
+    const { selectedIndex } = this.state
+
     return (
       <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
         <View style={{ flex: 0.7 }}>
@@ -22,10 +34,12 @@ class Filter extends Component {
         </View>
         <View style={{ flex: 0.3 }}>
           <ButtonGroup
+            onPress={this.updateIndex}
             selectedIndex={selectedIndex}
-            buttons={buttons}
+            buttons={this.buttons}
             containerStyle={{ height: 30 }}
-            selectedBackgroundColor="#bdc3c7"
+            selectedBackgroundColor="#3498db"
+            selectedTextStyle={{color: '#fff'}}
           />
         </View>
       </View>

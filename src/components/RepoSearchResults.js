@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
+
 import {
   Animated,
   FlatList,
@@ -10,7 +12,7 @@ import {
 import { Card, Text } from "react-native-elements";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import DetailsModal from "./DetailsModal";
+import RepoDetailsModal from "./RepoDetailsModal";
 import Spinner from "./Spinner";
 
 const GetDefault = gql`
@@ -37,13 +39,17 @@ const GetDefault = gql`
   }
 `;
 
-class SearchResults extends Component {
+class RepoSearchResults extends Component {
   state = {
     refreshing: false,
     value: new Animated.Value(0.3),
     query: "react-native",
     modalVisible: false,
     selectedNode: null
+  };
+
+  static defaultProps = {
+    query: "axios"
   };
 
   animate = () => {
@@ -54,6 +60,10 @@ class SearchResults extends Component {
 
   componentWillReceiveProps() {
     this.animate();
+  }
+
+  componentDidUpdate() {
+    console.warn(this.props)
   }
 
   onRefresh = () => {
@@ -79,7 +89,7 @@ class SearchResults extends Component {
   renderList = () => {
     if (this.state.modalVisible) {
       return (
-        <DetailsModal
+        <RepoDetailsModal
           selectedNode={this.state.selectedNode}
           toggleModal={this.toggleModal}
         />
@@ -130,7 +140,7 @@ class SearchResults extends Component {
 export default graphql(GetDefault, {
   options: ownProps => ({
     variables: {
-      query: ownProps.query
+      query: ownProps.query || 'jquery'
     }
   })
-})(SearchResults);
+})(RepoSearchResults);

@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, View, Text, StyleSheet, Image, Button } from "react-native";
 import { Header, Icon, Card, Divider } from "react-native-elements";
 
-const DetailsModal = ({ toggleModal, selectedNode }) => (
+const RepoDetailsModal = ({ toggleModal, selectedNode }) => (
   <Modal animationType="slide" onRequestClose={() => null}>
     <Header
       leftComponent={
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DetailsModal;
+export default RepoDetailsModal;
