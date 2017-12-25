@@ -1,23 +1,35 @@
 import React, { Component } from "react";
-import { Animated, FlatList, RefreshControl } from "react-native";
+import { Animated, FlatList, RefreshControl, View, Image } from "react-native";
 import { Card, Text } from "react-native-elements";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+
+const GetDefault = gql`
+  query GetDefault($query: String!) {
+    search(query: $query, type: REPOSITORY, first: 10) {
+      repositoryCount
+      edges {
+        node {
+          ... on Repository {
+            id
+            nameWithOwner
+            description
+            name
+            owner {
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 class SearchResults extends Component {
-  randomSort(a, b) {
-    return Math.random() > 0.5 ? -1 : 1;
-  }
-
-  randomString = () => {
-    return "helloworld"
-      .split("")
-      .sort(this.randomSort)
-      .join("");
-  };
-
   state = {
     refreshing: false,
-    data: this.randomString(),
-    value: new Animated.Value(0.3)
+    value: new Animated.Value(0.3),
+    query: "react-native"
   };
 
   animate = () => {
@@ -26,15 +38,14 @@ class SearchResults extends Component {
     }).start();
   };
 
-  componentDidMount() {
+  componentWillReceiveProps() {
     this.animate();
   }
 
   onRefresh = () => {
     this.setState(
       {
-        value: new Animated.Value(0.3),
-        data: this.randomString()
+        value: new Animated.Value(0.3)
       },
       () => {
         this.animate();
@@ -42,15 +53,31 @@ class SearchResults extends Component {
     );
   };
 
-  render() {
-    console.warn("animated");
+  _keyExtractor = item => item.node.id;
+
+  renderList = () => {
     return (
       <Animated.View style={{ opacity: this.state.value }}>
         <FlatList
-          data={this.state.data}
-          renderItem={({ item }) => (
-            <Card>
-              <Text>{item}</Text>
+          data={this.props.data.search.edges}
+          keyExtractor={this._keyExtractor}
+          renderItem={e => (
+            <Card title={e.item.node.nameWithOwner}>
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ flex: 0.7 }}>
+                  {/* <Text>{JSON.stringify(e)}</Text> */}
+                  {/* <Text>{e.item.node.nameWithOwner}</Text> */}
+                  <Text>{e.item.node.description}</Text>
+                </View>
+                <View style={{ flex: 0.3 }}>
+                  <Image
+                    style={{ width: 50, height: 50, alignSelf: 'center' }}
+                    source={{
+                      uri: e.item.node.owner.avatarUrl
+                    }}
+                  />
+                </View>
+              </View>
             </Card>
           )}
           refreshControl={
@@ -62,7 +89,24 @@ class SearchResults extends Component {
         />
       </Animated.View>
     );
+  };
+
+  render() {
+    if (this.props.data.loading) {
+      return (
+        <View>
+          <Text>loading...</Text>
+        </View>
+      );
+    } // end if
+    return this.renderList();
   }
 }
 
-export default SearchResults;
+export default graphql(GetDefault, {
+  options: ownProps => ({
+    variables: {
+      query: ownProps.query
+    }
+  })
+})(SearchResults);
